@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-
+       
     }
 
     /**
@@ -24,6 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.home');
+        return view('home');
     }
 }
