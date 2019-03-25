@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+
+Route::group(['namespace' => 'Admin','prefix' => '/admin', 'middleware' => 'is_admin',], function() {
+    
+    Route::resource('user','UserController');
+//    Route::get('/user-list','UserController@index')->name('user-list');
+//    Route::get('/create-user','UserController@create')->name('create-user');
+});
 
 Auth::routes();
