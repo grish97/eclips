@@ -19,22 +19,25 @@ $(document).ready(function() {
         userEdit (data) {
             let modal = $(`.modal`),
                 modalBody = $(`.modal-body`),
-                block = `<form action="/admin/user/${data.id}" class="updateForm">
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" name="email" id="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <input type="number" class="form-control" name="status" id="status">
-                                </div>
-                                <button type="submit" class="btn btn-primary update">Update</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </form>`;
+                block = `<div>
+                             <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" id="name" class="form-control">
+                              </div>
+                              <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control">
+                              </div>
+                              <div class="form-group mb-5">
+                                <label for="status">Status</label>
+                                <select name="status" id="status" class="form-control">
+                                    <option value="1">Default</option>
+                                    <option value="0">Blocked</option>
+                                </select>
+                              </div>
+                             <button type="button" class="btn btn-primary update" data-action="/admin/user/${data.id}">Update</button>
+                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                         </div>`;
 
             modalBody.append(block);
 
@@ -46,18 +49,21 @@ $(document).ready(function() {
         }
 
         updateUser (url,form) {
-            let formData = new FormData(form);
-            console.log(formData.get('name'))
-            formData.append('_method', 'put');
+            let name = $(`#name`),
+                email = $(`#email`),
+                status = $(`#status`);
+
             $.ajax({
                 url : url,
-                method : 'post',
-                data :  formData,
-                processData: false,
-                contentType: false,
-                success : (data) => {
-                    console.log(data)
-                }
+                type : 'put',
+                data :  {
+                    name : name.val(),
+                    email : email.val(),
+                    status : status.val()
+                },
+                dataType : 'json',
+            }).done((data) => {
+                console.log(data);
             });
         }
     }
@@ -79,10 +85,9 @@ $(document).ready(function() {
         request.generate(url,func);
     });
 
-    $(document).on(`submit`,`.updateForm`,(e) => {
-        e.preventDefault();
+    $(document).on(`click`,`.update`,(e) => {
         let elem = $(e.target),
-            url = elem.attr(`action`);
+            url = elem.attr(`data-action`);
 
         if(!url) return false;
 

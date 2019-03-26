@@ -76,12 +76,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return response()->json(['asd' => $request->all()]);
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'status' => 'required'
         ]);
+        var_dump($id);
+        User::query()
+            ->where('id',$id)
+            ->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'status' => $request->status
+        ]);
+
+        return response()->json(['message' => 'success']);
     }
 
     /**
