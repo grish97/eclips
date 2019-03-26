@@ -28,7 +28,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('admin.home') }}">
                     <img src="{{asset('images/eclipse.png')}}" alt="Eclipse" class="eclipseBrand">
                     <span class="font-weight-bold ml-2">{{ config('app.name', 'Laravel') }}</span>
                 </a>
@@ -89,9 +89,9 @@
             @yield('content')
         </main>
     </div>
-
     {{--SCRIPTS--}}
     <script src="{{mix('/js/app.js')}}"></script>
     <script src="{{mix('/js/bootstrap.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
     </body>
 </html>

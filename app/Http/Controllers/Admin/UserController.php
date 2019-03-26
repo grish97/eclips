@@ -62,7 +62,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        return response()->json($user);
     }
 
     /**
@@ -74,7 +76,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json(['asd' => $request->all()]);
+        $this->validate($request,[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'status' => 'required'
+        ]);
     }
 
     /**

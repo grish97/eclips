@@ -14,10 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::check()) {
-            if(auth()->user()->isAdmin()) return view('admin.dashboard');
+        if(Auth::check() && !Auth::user()->isAdmin()) {
+            return view('home.main');
         }
 
-        return view('home');
+        return view('welcome');
     }
 }

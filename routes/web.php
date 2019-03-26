@@ -12,15 +12,12 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::group(['namespace' => 'Admin','prefix' => '/admin', 'middleware' => 'is_admin',], function() {
-    
+Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => 'is_admin'], function() {
+    Route::get('/','DashboardController@index')->name('admin.home');
     Route::resource('user','UserController');
-//    Route::get('/user-list','UserController@index')->name('user-list');
+//    Route::post('user/{id}','UserController@update')->name('user-list');
 //    Route::get('/create-user','UserController@create')->name('create-user');
 });
 
