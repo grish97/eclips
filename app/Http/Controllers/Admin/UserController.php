@@ -78,19 +78,19 @@ class UserController extends Controller
     {
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255','unique:users,email,'.$id],
             'status' => 'required'
         ]);
-        var_dump($id);
+
         User::query()
             ->where('id',$id)
             ->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'status' => $request->status
-        ]);
+                'name' => $request->name,
+                'email' => $request->email,
+                'status' => $request->status
+            ]);
 
-        return response()->json(['message' => 'success']);
+        return response()->json(['message' => 'Successfully updated']);
     }
 
     /**

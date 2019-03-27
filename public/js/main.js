@@ -12,6 +12,7 @@ $(document).ready(function() {
                     return false;
                 }
                 request[func](data);
+                console.log(data);
             });
 
         }
@@ -23,17 +24,19 @@ $(document).ready(function() {
                              <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" name="name" id="name" class="form-control">
+                                <span class="small text-danger errorBlock"></span>
                               </div>
                               <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control">
+                                <span class="small text-danger errorBlock"></span>
                               </div>
                               <div class="form-group mb-5">
                                 <label for="status">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option value="1">Default</option>
                                     <option value="0">Blocked</option>
-                                </select>
+                                </select>                            
                               </div>
                              <button type="button" class="btn btn-primary update" data-action="/admin/user/${data.id}">Update</button>
                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -48,10 +51,11 @@ $(document).ready(function() {
             modal.modal();
         }
 
-        updateUser (url,form) {
+        updateUser (url) {
             let name = $(`#name`),
                 email = $(`#email`),
-                status = $(`#status`);
+                status = $(`#status`),
+                modal = $(`.modal`);
 
             $.ajax({
                 url : url,
@@ -62,8 +66,20 @@ $(document).ready(function() {
                     status : status.val()
                 },
                 dataType : 'json',
-            }).done((data) => {
-                console.log(data);
+                success : (data) => {
+                    modal.modal(`hide`);
+                    toastr.success(data.message);
+                },
+                error : (err) => {
+                    $.each(err.responseJSON.errors, (key,value) => {
+                        if(key === 'status') {
+                            let option = `<option value="1">Default</option>
+                                          <option value="0">Blocked</option>`;
+                            $(`#status`).empty().append(option);
+                        }
+                        $(`#${key}`).siblings(`.errorBlock`).text(value[0]);
+                    });
+                }
             });
         }
     }
@@ -92,6 +108,10 @@ $(document).ready(function() {
         if(!url) return false;
 
         request.updateUser(url,elem[0]);
+    });
+
+    $(document).on(`focus`,`input`, function(e) {
+        $(this).siblings(`.errorBlock`).text(``);
     });
 
     $(document).on(`hidden.bs.modal`, `.modal`, function(e) {

@@ -20,8 +20,8 @@
                         <td>{{$user->status}}</td>
                         <td>
                             <a href="/admin/user/{{$user->id}}/edit" class="mr-3 text-success request" data-func="userEdit"><i class="fas fa-user-edit"></i></a>
-                            <a href="/admin/user/{{$user->id}}" class="text-primary mr-3" data-func="userShow"><i class="far fa-eye"></i></a>
-                            <a href="/admin/user/{{$user->id}}" class="text-danger " data-func="userDelete"><i class="fas fa-user-times request"></i></a>
+                            <a href="/admin/user/{{$user->id}}" class="text-primary mr-3 request" data-func="userShow"><i class="far fa-eye"></i></a>
+                            <a href="/admin/user/{{$user->id}}" class="text-danger request" data-func="userDelete"><i class="fas fa-user-times request"></i></a>
                         </td>
                     </tr>
                 @endforeach
