@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::query()
-            ->where('is_admin',0)
+            ->where('is_admin',null)
             ->orderBy('name')
             ->get();
 
@@ -50,7 +50,8 @@ class UserController extends Controller
        $this->validate($request,[
            'name' => ['required', 'string', 'max:255'],
            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-           'password' => ['required', 'string', 'min:8'],
+           'password' => ['required', 'string', 'min:3'],
+           'status' => 'required|boolean',
        ]);
 
        User::create([
@@ -59,6 +60,8 @@ class UserController extends Controller
            'password' => Hash::make($request->password),
            'status' => $request->status,
        ]);
+
+       return redirect('/admin');
     }
 
     /**
@@ -99,7 +102,7 @@ class UserController extends Controller
         $this->validate($request,[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255','unique:users,email,'.$id],
-            'status' => 'required'
+            'status' => 'required|boolean',
         ]);
 
         User::query()

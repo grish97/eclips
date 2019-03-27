@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function index() {
         $userCount = User::query()
-            ->where('is_admin','0')
+            ->where('is_admin',null)
             ->count();
 
         $vehicleCount = Vehicle::query()->count();

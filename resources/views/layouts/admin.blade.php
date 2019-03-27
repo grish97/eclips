@@ -58,8 +58,8 @@
                             <a href="#" id="vehicleDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Vehicle</a>
 
                             <div class="dropdown-menu" aria-labelledby="vehicleDropdown">
-                                <a href="" class="dropdown-item">List</a>
-                                <a href="" class="dropdown-item">Create</a>
+                                <a href="/admin/vehicle" class="dropdown-item">List</a>
+                                <a href="/admin/vehicle/create" class="dropdown-item">Create</a>
                             </div>
                         </li>
 
@@ -92,6 +92,7 @@
     {{--SCRIPTS--}}
     <script src="{{mix('/js/app.js')}}"></script>
     <script src="{{mix('/js/bootstrap.js')}}"></script>
-    <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{mix('js/user.js')}}"></script>
+    <script src="{{mix('/js/vehicle.js')}}"></script>
     </body>
 </html>

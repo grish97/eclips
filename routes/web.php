@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => 'is_admin'], function() {
     Route::get('/','DashboardController@index')->name('admin.home');
     Route::resource('user','UserController');
+    Route::resource('vehicle','VehicleController');
 });
 
 Auth::routes();

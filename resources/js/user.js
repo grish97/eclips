@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    class Request
+    class UserRequest
     {
         constructor () {
             this.rowId = null;
@@ -13,10 +13,10 @@ $(document).ready(function() {
                 dataType : 'json'
             }).done((data) => {
                 if(!Object.entries(data).length) {
-                    toastr.warning(`Warning`);
+                    window.location.reload();
                     return false;
                 }
-                request[func](data);
+                userRequest[func](data);
             });
 
         }
@@ -85,7 +85,7 @@ $(document).ready(function() {
                 }).done((data) => {
                     this.modal.modal(`hide`);
                     toastr.info(data.message);
-                    $(`tr[data-id=${request.rowId}]`).remove();
+                    $(`tr[data-id=${userRequest.rowId}]`).remove();
 
                     if (!tableBody.children().length) {
                         block = `<div class="jumbotron">
@@ -115,7 +115,7 @@ $(document).ready(function() {
                     },
                     dataType : 'json',
                     success : (data) => {
-                        let row = $(`tr[data-id=${request.rowId}]`);
+                        let row = $(`tr[data-id=${userRequest.rowId}]`);
 
                         row.find(`.name`).text(data.user.name);
                         row.find(`.email`).text(data.user.email);
@@ -137,7 +137,7 @@ $(document).ready(function() {
                 });
         }
     }
-    let request = new Request();
+    let userRequest = new UserRequest();
 
     $.ajaxSetup({
         headers: {
@@ -153,13 +153,13 @@ $(document).ready(function() {
 
         if(!url || !func) return false;
 
-        request.rowId = elem.closest(`tr`).attr(`data-id`);
+        userRequest.rowId = elem.closest(`tr`).attr(`data-id`);
 
         if(func === 'userDelete') {
-            request.userDelete(url);
+            userRequest.userDelete(url);
             return false;
         }
-        request.generate(url,func);
+        userRequest.generate(url,func);
     });
 
     $(document).on(`click`,`.update`,(e) => {
@@ -168,7 +168,7 @@ $(document).ready(function() {
 
         if(!url) return false;
 
-        request.updateUser(url);
+        userRequest.updateUser(url);
     });
 
     $(document).on(`focus`,`input`, function(e) {
