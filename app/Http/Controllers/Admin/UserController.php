@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -19,7 +20,13 @@ class UserController extends Controller
             ->where('is_admin',0)
             ->orderBy('name')
             ->get();
-        return view('admin.index',compact('users'));
+
+        if (!$users->count()) {
+            $message = 'Empty user';
+            return view('home.empty',compact('message'));
+        }
+
+        return view('admin.users.index',compact('users'));
     }
 
     /**
@@ -29,7 +36,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        dd('create');
+        return view('admin.users.create');
     }
 
     /**
@@ -40,7 +47,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $this->validate($request,[
+           'name' => ['required', 'string', 'max:255'],
+           'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+           'password' => ['required', 'string', 'min:8'],
+       ]);
+
+       User::create([
+           'name' => $request->name,
+           'email' => $request->email,
+           'password' => Hash::make($request->password),
+           'status' => $request->status,
+       ]);
     }
 
     /**
@@ -51,7 +69,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+
+        return response()->json($user);
     }
 
     /**
@@ -90,7 +110,9 @@ class UserController extends Controller
                 'status' => $request->status
             ]);
 
-        return response()->json(['message' => 'Successfully updated']);
+        $user = User::find($id);
+
+        return response()->json(['message' => 'Successfully updated','user' => $user]);
     }
 
     /**
@@ -101,6 +123,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        if(!$user) return response()->json(['message' => 'Wrong user id']);
+
+        $user->delete();
+
+        return response()->json(['message' => 'Successfully deleted']);
     }
+
 }
