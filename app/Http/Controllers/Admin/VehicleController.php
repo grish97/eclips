@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Faker\Generator as Faker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
