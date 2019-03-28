@@ -161,15 +161,16 @@ $(document).ready(function () {
             method: 'delete',
             dataType: 'json'
           }).done(function (data) {
-            _this.modal.modal("hide");
-
-            toastr.info(data.message);
             $("tr[data-id=".concat(userRequest.rowId, "]")).remove();
 
             if (!tableBody.children().length) {
               block = "<div class=\"jumbotron\">\n                                    <h2 class=\"text-muted\">Empty user</h2>\n                                </div>";
               $(".table").before(block).remove();
             }
+
+            _this.modal.modal("hide");
+
+            toastr.info(data.message);
           });
         });
       }
@@ -258,7 +259,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\eclipse\resources\js\user.js */"./resources/js/user.js");
+module.exports = __webpack_require__(/*! C:\xampp_2\htdocs\eclipse\resources\js\user.js */"./resources/js/user.js");
 
 
 /***/ })

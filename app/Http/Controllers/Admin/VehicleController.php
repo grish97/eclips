@@ -25,7 +25,11 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        return view('admin.vehicle.create');
+        $model = \App\Models\Make::query()
+            ->with('detail')
+            ->first();
+        dd($model);
+//        return view('admin.vehicle.create');
     }
 
     /**

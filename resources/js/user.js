@@ -83,8 +83,6 @@ $(document).ready(function() {
                     method : 'delete',
                     dataType : 'json'
                 }).done((data) => {
-                    this.modal.modal(`hide`);
-                    toastr.info(data.message);
                     $(`tr[data-id=${userRequest.rowId}]`).remove();
 
                     if (!tableBody.children().length) {
@@ -94,6 +92,9 @@ $(document).ready(function() {
 
                         $(`.table`).before(block).remove();
                     }
+
+                    this.modal.modal(`hide`);
+                    toastr.info(data.message);
                 })
             });
 

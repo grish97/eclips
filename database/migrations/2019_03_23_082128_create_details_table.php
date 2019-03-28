@@ -15,7 +15,7 @@ class CreateDetailsTable extends Migration
     {
         Schema::create('details', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('vehicle_name');
+            $table->string('name');
             $table->longText('description');
             $table->timestamps();
         });
