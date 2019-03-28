@@ -20,9 +20,9 @@ class CreateVehiclesTable extends Migration
             $table->integer('detail_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('make_id')->references('id')->on('makes')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('detail_id')->references('id')->on('details')->onDelete('cascade')->onUpdate('cascade');
+//            $table->foreign('make_id')->references('id')->on('makes')->onDelete('cascade');
+//            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade');
+//            $table->foreign('detail_id')->references('id')->on('details')->onDelete('cascade');
         });
     }
 

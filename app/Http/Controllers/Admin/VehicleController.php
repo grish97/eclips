@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Make;
 use Faker\Generator as Faker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,11 +26,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        $model = \App\Models\Make::query()
-            ->with('detail')
-            ->first();
-        dd($model);
-//        return view('admin.vehicle.create');
+
     }
 
     /**
