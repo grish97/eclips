@@ -14,7 +14,5 @@ class Make extends Model
 //        return $this->belongsToMany(Detail::class,Vehicle::class,'detail_id','id','id');
 //    }
 //
-//    public function vehicle() {
-//        return $this->belongsTo(Vehicle::class,'id','make_id');
-//    }
+
 }

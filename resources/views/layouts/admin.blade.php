@@ -92,7 +92,7 @@
     {{--SCRIPTS--}}
     <script src="{{mix('/js/app.js')}}"></script>
     <script src="{{mix('/js/bootstrap.js')}}"></script>
-    <script src="{{mix('js/user.js')}}"></script>
-    <script src="{{mix('/js/vehicle.js')}}"></script>
+    <script src="{{asset('/js/user.js')}}"></script>
+{{--    <script src="{{asset('/js/vehicle.js')}}"></script>--}}
     </body>
 </html>

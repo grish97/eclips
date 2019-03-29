@@ -148,31 +148,10 @@ $(document).ready(function () {
     }, {
       key: "userDelete",
       value: function userDelete(url) {
-        var _this = this;
-
-        var tableBody = $("tbody"),
-            block = "<p>You want to delete this user?</p>\n                         <button type=\"button\" class=\"btn btn-danger delete\">Yes</button>\n                         <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">No</button>";
+        var block = "<p>You want to delete this user?</p>\n                         <button type=\"button\" class=\"btn btn-danger delete\" data-action=\"".concat(url, "\">Yes</button>\n                         <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">No</button>");
         $(".modal-title").text("Delete user");
         this.modal.find(".modal-body").append(block);
         this.modal.modal();
-        $(document).on("click", ".delete", function (e) {
-          $.ajax({
-            url: url,
-            method: 'delete',
-            dataType: 'json'
-          }).done(function (data) {
-            $("tr[data-id=".concat(userRequest.rowId, "]")).remove();
-
-            if (!tableBody.children().length) {
-              block = "<div class=\"jumbotron\">\n                                    <h2 class=\"text-muted\">Empty user</h2>\n                                </div>";
-              $(".table").before(block).remove();
-            }
-
-            _this.modal.modal("hide");
-
-            toastr.info(data.message);
-          });
-        });
       }
     }, {
       key: "updateUser",
@@ -210,44 +189,71 @@ $(document).ready(function () {
           }
         });
       }
+    }, {
+      key: "events",
+      value: function events() {
+        var _this = this;
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+        $(document).on("click", ".request", function (e) {
+          e.preventDefault();
+          var elem = $(e.target).parent("a"),
+              url = elem.attr("href"),
+              func = elem.attr("data-func");
+          if (!url || !func) return false;
+          userRequest.rowId = elem.closest("tr").attr("data-id");
+
+          if (func === 'userDelete') {
+            userRequest.userDelete(url);
+            return false;
+          }
+
+          userRequest.generate(url, func);
+        });
+        $(document).on("click", ".update", function (e) {
+          var elem = $(e.target),
+              url = elem.attr("data-action");
+          if (!url) return false;
+          userRequest.updateUser(url);
+        });
+        $(document).on("click", ".delete", function (e) {
+          var url = $(e.target).attr("data-action"),
+              tableBody = $("tbody");
+          $.ajax({
+            url: url,
+            method: 'delete',
+            dataType: 'json'
+          }).done(function (data) {
+            $("tr[data-id=".concat(userRequest.rowId, "]")).remove();
+
+            if (!tableBody.children().length) {
+              var block = "<div class=\"jumbotron\">\n                            <h2 class=\"text-muted\">Empty user</h2>\n                        </div>";
+              $(".table").before(block).remove();
+            }
+
+            _this.modal.modal("hide");
+
+            toastr.info(data.message);
+          });
+        });
+        $(document).on("focus", "input", function (e) {
+          $(this).siblings(".errorBlock").text("");
+        });
+        $(document).on("hidden.bs.modal", ".modal", function (e) {
+          $(".modal-body").empty();
+        });
+      }
     }]);
 
     return UserRequest;
   }();
 
   var userRequest = new UserRequest();
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
-  $(document).on("click", ".request", function (e) {
-    e.preventDefault();
-    var elem = $(e.target).parent("a"),
-        url = elem.attr("href"),
-        func = elem.attr("data-func");
-    if (!url || !func) return false;
-    userRequest.rowId = elem.closest("tr").attr("data-id");
-
-    if (func === 'userDelete') {
-      userRequest.userDelete(url);
-      return false;
-    }
-
-    userRequest.generate(url, func);
-  });
-  $(document).on("click", ".update", function (e) {
-    var elem = $(e.target),
-        url = elem.attr("data-action");
-    if (!url) return false;
-    userRequest.updateUser(url);
-  });
-  $(document).on("focus", "input", function (e) {
-    $(this).siblings(".errorBlock").text("");
-  });
-  $(document).on("hidden.bs.modal", ".modal", function (e) {
-    $(".modal-body").empty();
-  });
+  userRequest.events();
 });
 
 /***/ }),
@@ -259,7 +265,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp_2\htdocs\eclipse\resources\js\user.js */"./resources/js/user.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\eclipse\resources\js\user.js */"./resources/js/user.js");
 
 
 /***/ })

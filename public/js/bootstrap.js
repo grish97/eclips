@@ -36637,7 +36637,7 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp_2\htdocs\eclipse\resources\js\bootstrap.js */"./resources/js/bootstrap.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\eclipse\resources\js\bootstrap.js */"./resources/js/bootstrap.js");
 
 
 /***/ })

@@ -16,7 +16,11 @@ class VehicleController extends Controller
      */
     public function index()
     {
+        $vehicles = Make::query()
+            ->with('model')
+            ->get();
 
+        return view('admin.vehicle.index',compact('vehicles'));
     }
 
     /**

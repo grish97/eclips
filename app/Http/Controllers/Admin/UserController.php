@@ -128,11 +128,12 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if(!$user) return response()->json(['message' => 'Wrong user id']);
+        if($user)  {
+            $user->delete();
+            return response()->json(['message' => 'Successfully deleted']);
+        }
 
-        $user->delete();
-
-        return response()->json(['message' => 'Successfully deleted']);
+        return null;
     }
 
 }

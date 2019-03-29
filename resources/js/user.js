@@ -68,16 +68,90 @@ $(document).ready(function() {
         }
 
         userDelete (url) {
-            let tableBody = $(`tbody`),
-                block = `<p>You want to delete this user?</p>
-                         <button type="button" class="btn btn-danger delete">Yes</button>
+            let block = `<p>You want to delete this user?</p>
+                         <button type="button" class="btn btn-danger delete" data-action="${url}">Yes</button>
                          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>`;
 
             $(`.modal-title`).text(`Delete user`);
             this.modal.find(`.modal-body`).append(block);
             this.modal.modal();
+        }
+
+        updateUser (url) {
+            let name = $(`#name`),
+                email = $(`#email`),
+                status = $(`#status`),
+                modal = $(`.modal`);
+
+            $.ajax({
+                url : url,
+                type : 'put',
+                data :  {
+                    name : name.val(),
+                    email : email.val(),
+                    status : status.val()
+                },
+                dataType : 'json',
+                success : (data) => {
+                    let row = $(`tr[data-id=${userRequest.rowId}]`);
+
+                    row.find(`.name`).text(data.user.name);
+                    row.find(`.email`).text(data.user.email);
+                    row.find(`.status`).text(data.user.status);
+
+                    modal.modal(`hide`);
+                    toastr.success(data.message);
+                },
+                error : (err) => {
+                    $.each(err.responseJSON.errors, (key,value) => {
+                        if(key === 'status') {
+                            let option = `<option value="0">Default</option>
+                                          <option value="1">Blocked</option>`;
+                            $(`#status`).empty().append(option);
+                        }
+                        $(`#${key}`).siblings(`.errorBlock`).text(value[0]);
+                    });
+                }
+            });
+        }
+
+        events () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $(document).on(`click`,`.request`,(e) => {
+                e.preventDefault();
+                let elem = $(e.target).parent(`a`),
+                    url = elem.attr(`href`),
+                    func =  elem.attr(`data-func`);
+
+                if(!url || !func) return false;
+
+                userRequest.rowId = elem.closest(`tr`).attr(`data-id`);
+
+                if(func === 'userDelete') {
+                    userRequest.userDelete(url);
+                    return false;
+                }
+                userRequest.generate(url,func);
+            });
+
+            $(document).on(`click`,`.update`,(e) => {
+                let elem = $(e.target),
+                    url = elem.attr(`data-action`);
+
+                if(!url) return false;
+
+                userRequest.updateUser(url);
+            });
 
             $(document).on(`click`,`.delete`, (e) => {
+                let url = $(e.target).attr(`data-action`),
+                    tableBody = $(`tbody`);
+
                 $.ajax({
                     url : url,
                     method : 'delete',
@@ -86,9 +160,9 @@ $(document).ready(function() {
                     $(`tr[data-id=${userRequest.rowId}]`).remove();
 
                     if (!tableBody.children().length) {
-                        block = `<div class="jumbotron">
-                                    <h2 class="text-muted">Empty user</h2>
-                                </div>`;
+                        let block = `<div class="jumbotron">
+                            <h2 class="text-muted">Empty user</h2>
+                        </div>`;
 
                         $(`.table`).before(block).remove();
                     }
@@ -98,86 +172,17 @@ $(document).ready(function() {
                 })
             });
 
-        }
+            $(document).on(`focus`,`input`, function(e) {
+                $(this).siblings(`.errorBlock`).text(``);
+            });
 
-        updateUser (url) {
-            let name = $(`#name`),
-                email = $(`#email`),
-                status = $(`#status`),
-                modal = $(`.modal`);
-
-                $.ajax({
-                    url : url,
-                    type : 'put',
-                    data :  {
-                        name : name.val(),
-                        email : email.val(),
-                        status : status.val()
-                    },
-                    dataType : 'json',
-                    success : (data) => {
-                        let row = $(`tr[data-id=${userRequest.rowId}]`);
-
-                        row.find(`.name`).text(data.user.name);
-                        row.find(`.email`).text(data.user.email);
-                        row.find(`.status`).text(data.user.status);
-
-                        modal.modal(`hide`);
-                        toastr.success(data.message);
-                    },
-                    error : (err) => {
-                        $.each(err.responseJSON.errors, (key,value) => {
-                            if(key === 'status') {
-                                let option = `<option value="0">Default</option>
-                                          <option value="1">Blocked</option>`;
-                                $(`#status`).empty().append(option);
-                            }
-                            $(`#${key}`).siblings(`.errorBlock`).text(value[0]);
-                        });
-                    }
-                });
+            $(document).on(`hidden.bs.modal`, `.modal`, function(e) {
+                $(`.modal-body`).empty();
+            });
         }
     }
+
     let userRequest = new UserRequest();
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $(document).on(`click`,`.request`,(e) => {
-        e.preventDefault();
-        let elem = $(e.target).parent(`a`),
-            url = elem.attr(`href`),
-            func =  elem.attr(`data-func`);
-
-        if(!url || !func) return false;
-
-        userRequest.rowId = elem.closest(`tr`).attr(`data-id`);
-
-        if(func === 'userDelete') {
-            userRequest.userDelete(url);
-            return false;
-        }
-        userRequest.generate(url,func);
-    });
-
-    $(document).on(`click`,`.update`,(e) => {
-        let elem = $(e.target),
-            url = elem.attr(`data-action`);
-
-        if(!url) return false;
-
-        userRequest.updateUser(url);
-    });
-
-    $(document).on(`focus`,`input`, function(e) {
-        $(this).siblings(`.errorBlock`).text(``);
-    });
-
-    $(document).on(`hidden.bs.modal`, `.modal`, function(e) {
-        $(`.modal-body`).empty();
-    });
+    userRequest.events();
 });
 
