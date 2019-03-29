@@ -6,6 +6,7 @@ use App\Models\Make;
 use Faker\Generator as Faker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use phpDocumentor\Reflection\Types\Array_;
 
 class VehicleController extends Controller
 {
@@ -17,10 +18,12 @@ class VehicleController extends Controller
     public function index()
     {
         $vehicles = Make::query()
-            ->with('model')
-            ->get();
-
-        return view('admin.vehicle.index',compact('vehicles'));
+            ->with(['vehicle' => function($vehicle) {
+                $vehicle->with('model');
+            }])
+            ->get()->toArray();
+            dd($vehicles);
+//        return view('admin.vehicle.index',compact('vehicles'));
     }
 
     /**

@@ -37162,8 +37162,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\eclipse\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\eclipse\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp_2\htdocs\eclipse\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp_2\htdocs\eclipse\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

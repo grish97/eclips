@@ -1,7 +1,8 @@
 $(document).ready(function() {
-    class UserRequest
+    class User
     {
         constructor () {
+            this.generator = null;
             this.rowId = null;
             this.modal = $(`.modal`);
         }
@@ -16,7 +17,7 @@ $(document).ready(function() {
                     window.location.reload();
                     return false;
                 }
-                userRequest[func](data);
+                user[func](data);
             });
 
         }
@@ -67,7 +68,7 @@ $(document).ready(function() {
             this.modal.modal(`show`);
         }
 
-        userDelete (url) {
+        *userDelete (url) {
             let block = `<p>You want to delete this user?</p>
                          <button type="button" class="btn btn-danger delete" data-action="${url}">Yes</button>
                          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>`;
@@ -75,6 +76,31 @@ $(document).ready(function() {
             $(`.modal-title`).text(`Delete user`);
             this.modal.find(`.modal-body`).append(block);
             this.modal.modal();
+
+            yield;
+
+            let tableBody = $(`tbody`);
+
+            $.ajax({
+                url : url,
+                method : 'delete',
+                dataType : 'json'
+            }).done((data) => {
+                $(`tr[data-id=${user.rowId}]`).remove();
+
+                if (!tableBody.children().length) {
+                    let block = `<div class="jumbotron">
+                            <h2 class="text-muted">Empty user</h2>
+                        </div>`;
+
+                    $(`.table`).before(block).remove();
+                }
+
+                this.modal.modal(`hide`);
+                toastr.info(data.message);
+
+            })
+
         }
 
         updateUser (url) {
@@ -93,7 +119,7 @@ $(document).ready(function() {
                 },
                 dataType : 'json',
                 success : (data) => {
-                    let row = $(`tr[data-id=${userRequest.rowId}]`);
+                    let row = $(`tr[data-id=${user.rowId}]`);
 
                     row.find(`.name`).text(data.user.name);
                     row.find(`.email`).text(data.user.email);
@@ -130,13 +156,14 @@ $(document).ready(function() {
 
                 if(!url || !func) return false;
 
-                userRequest.rowId = elem.closest(`tr`).attr(`data-id`);
+                user.rowId = elem.closest(`tr`).attr(`data-id`);
 
                 if(func === 'userDelete') {
-                    userRequest.userDelete(url);
+                    user.generator = user.userDelete(url);
+                    user.generator.next();
                     return false;
                 }
-                userRequest.generate(url,func);
+                user.generate(url,func);
             });
 
             $(document).on(`click`,`.update`,(e) => {
@@ -145,31 +172,11 @@ $(document).ready(function() {
 
                 if(!url) return false;
 
-                userRequest.updateUser(url);
+                user.updateUser(url);
             });
 
             $(document).on(`click`,`.delete`, (e) => {
-                let url = $(e.target).attr(`data-action`),
-                    tableBody = $(`tbody`);
-
-                $.ajax({
-                    url : url,
-                    method : 'delete',
-                    dataType : 'json'
-                }).done((data) => {
-                    $(`tr[data-id=${userRequest.rowId}]`).remove();
-
-                    if (!tableBody.children().length) {
-                        let block = `<div class="jumbotron">
-                            <h2 class="text-muted">Empty user</h2>
-                        </div>`;
-
-                        $(`.table`).before(block).remove();
-                    }
-
-                    this.modal.modal(`hide`);
-                    toastr.info(data.message);
-                })
+                user.generator.next();
             });
 
             $(document).on(`focus`,`input`, function(e) {
@@ -182,7 +189,7 @@ $(document).ready(function() {
         }
     }
 
-    let userRequest = new UserRequest();
-    userRequest.events();
+    let user = new User();
+    user.events();
 });
 

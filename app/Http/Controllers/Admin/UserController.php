@@ -22,8 +22,8 @@ class UserController extends Controller
             ->get();
 
         if (!$users->count()) {
-            $message = 'Empty user';
-            return view('home.empty',compact('message'));
+//            $message = 'Empty user';
+            return view('home.empty')->with('message','Empty user');
         }
 
         return view('admin.users.index',compact('users'));

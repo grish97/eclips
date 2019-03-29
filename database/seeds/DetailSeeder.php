@@ -12,6 +12,7 @@ class DetailSeeder extends Seeder
      */
     public function run()
     {
+
         factory(Detail::class,20)->create();
     }
 }
