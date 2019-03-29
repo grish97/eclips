@@ -142,12 +142,13 @@ $(document).ready(function() {
         }
 
         events () {
+            //AJAX SETUP
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            //AJAX REQUEST
             $(document).on(`click`,`.request`,(e) => {
                 e.preventDefault();
                 let elem = $(e.target).parent(`a`),
@@ -165,7 +166,7 @@ $(document).ready(function() {
                 }
                 user.generate(url,func);
             });
-
+            //UPDATE USER DATA
             $(document).on(`click`,`.update`,(e) => {
                 let elem = $(e.target),
                     url = elem.attr(`data-action`);
@@ -174,22 +175,23 @@ $(document).ready(function() {
 
                 user.updateUser(url);
             });
-
+            //DELETE USER
             $(document).on(`click`,`.delete`, (e) => {
                 user.generator.next();
             });
-
+            //FOCUS ON INPUT
             $(document).on(`focus`,`input`, function(e) {
                 $(this).siblings(`.errorBlock`).text(``);
             });
-
+            //EVENT CLOSE MODAL
             $(document).on(`hidden.bs.modal`, `.modal`, function(e) {
                 $(`.modal-body`).empty();
             });
         }
     }
-
+    //EXAMPLE CLASS USER
     let user = new User();
+    //RUN EVENTS
     user.events();
 });
 

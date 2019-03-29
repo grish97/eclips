@@ -985,11 +985,13 @@ $(document).ready(function () {
     }, {
       key: "events",
       value: function events() {
+        //AJAX SETUP
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
-        });
+        }); //AJAX REQUEST
+
         $(document).on("click", ".request", function (e) {
           e.preventDefault();
           var elem = $(e.target).parent("a"),
@@ -1005,19 +1007,23 @@ $(document).ready(function () {
           }
 
           user.generate(url, func);
-        });
+        }); //UPDATE USER DATA
+
         $(document).on("click", ".update", function (e) {
           var elem = $(e.target),
               url = elem.attr("data-action");
           if (!url) return false;
           user.updateUser(url);
-        });
+        }); //DELETE USER
+
         $(document).on("click", ".delete", function (e) {
           user.generator.next();
-        });
+        }); //FOCUS ON INPUT
+
         $(document).on("focus", "input", function (e) {
           $(this).siblings(".errorBlock").text("");
-        });
+        }); //EVENT CLOSE MODAL
+
         $(document).on("hidden.bs.modal", ".modal", function (e) {
           $(".modal-body").empty();
         });
@@ -1025,9 +1031,11 @@ $(document).ready(function () {
     }]);
 
     return User;
-  }();
+  }(); //EXAMPLE CLASS USER
 
-  var user = new User();
+
+  var user = new User(); //RUN EVENTS
+
   user.events();
 });
 
