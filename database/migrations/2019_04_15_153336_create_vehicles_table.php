@@ -17,12 +17,14 @@ class CreateVehiclesTable extends Migration
             $table->increments('id');
             $table->integer('make_id')->unsigned();
             $table->integer('model_id')->unsigned();
+            $table->integer('year_id')->unsigned();
             $table->integer('detail_id')->unsigned();
             $table->timestamps();
 
-//            $table->foreign('make_id')->references('id')->on('makes')->onDelete('cascade');
-//            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade');
-//            $table->foreign('detail_id')->references('id')->on('details')->onDelete('cascade');
+            $table->foreign('make_id')->references('id')->on('makes')->onDelete('cascade');
+            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade');
+            $table->foreign('year_id')->references('id')->on('years')->onDelete('cascade');
+            $table->foreign('detail_id')->references('id')->on('details')->onDelete('cascade');
         });
     }
 

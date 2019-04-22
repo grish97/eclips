@@ -13,9 +13,7 @@ class VehicleSeeder extends Seeder
      */
     public function run()
     {
-        $countModel = Models::query()->count();
-
-        factory(Vehicle::class,$countModel)->create();
+        factory(Vehicle::class,15)->create();
 
     }
 }

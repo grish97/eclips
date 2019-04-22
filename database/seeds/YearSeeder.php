@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Models;
+use App\Models\Year;
 use Illuminate\Database\Seeder;
 
-class ModelSeeder extends Seeder
+class YearSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class ModelSeeder extends Seeder
      */
     public function run()
     {
-        factory(Models::class,20)->create();
+        factory(Year::class,15)->create();
     }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Vehicle;
 use App\Models\Make;
+use App\Models\Models;
+use App\Models\Year;
 use Faker\Generator as Faker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,13 +20,11 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = Make::query()
-            ->with(['vehicle' => function($vehicle) {
-                $vehicle->with('model');
-            }])
-            ->get()->toArray();
-            dd($vehicles);
-//        return view('admin.vehicle.index',compact('vehicles'));
+        $vehicles = Vehicle::query()
+            ->with('make','model','year')
+            ->get();
+
+        return view('admin.vehicle.index',compact('vehicles'));
     }
 
     /**

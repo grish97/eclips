@@ -19,9 +19,9 @@
                         <td class="email">{{$user->email}}</td>
                         <td class="status">{{$user->status}}</td>
                         <td>
-                            <a href="/admin/user/{{$user->id}}/edit" class="mr-3 text-success request" data-func="userEdit"><i class="fas fa-user-edit"></i></a>
-                            <a href="/admin/user/{{$user->id}}" class="text-primary mr-3 request" data-func="userShow"><i class="far fa-eye"></i></a>
-                            <a href="/admin/user/{{$user->id}}" class="text-danger request" data-func="userDelete"><i class="fas fa-user-times"></i></a>
+                            <a href="/admin/user/{{$user->id}}/edit" class="mr-3 text-success requestUser" data-func="userEdit"><i class="fas fa-user-edit"></i></a>
+                            <a href="/admin/user/{{$user->id}}" class="text-primary mr-3 requestUser" data-func="userShow"><i class="far fa-eye"></i></a>
+                            <a href="/admin/user/{{$user->id}}" class="text-danger requestUser" data-func="userDelete"><i class="fas fa-user-times"></i></a>
                         </td>
                     </tr>
                 @endforeach

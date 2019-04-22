@@ -192,6 +192,8 @@ $(document).ready(function() {
     //EXAMPLE CLASS USER
     let user = new User();
     //RUN EVENTS
-    user.events();
+    $(document).on(`click`, `.users`, () => {
+        user.events()
+    });
 });
 

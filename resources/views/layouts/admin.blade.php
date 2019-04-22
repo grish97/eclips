@@ -46,19 +46,19 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item dropdown mr-3">
-                            <a href="#" id="userDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>User</a>
+                            <a href="#" id="userDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="fas fa-users"></i> User</a>
 
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                <a href="/admin/user" class="dropdown-item">List</a>
+                                <a href="/admin/user" class="dropdown-item users">List</a>
                                 <a href="/admin/user/create" class="dropdown-item">Create</a>
                             </div>
                         </li>
 
                         <li class="nav-item dropdown mr-3">
-                            <a href="#" id="vehicleDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Vehicle</a>
+                            <a href="#" id="vehicleDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre><i class="fas fa-car-alt"></i> Vehicle</a>
 
                             <div class="dropdown-menu" aria-labelledby="vehicleDropdown">
-                                <a href="/admin/vehicle" class="dropdown-item">List</a>
+                                <a href="/admin/vehicle" class="dropdown-item vehicles">List</a>
                                 <a href="/admin/vehicle/create" class="dropdown-item">Create</a>
                             </div>
                         </li>
@@ -93,6 +93,7 @@
     <script src="{{mix('/js/app.js')}}"></script>
     <script src="{{mix('/js/bootstrap.js')}}"></script>
     <script src="{{asset('/js/user.js')}}"></script>
+    <script src="{{asset('/js/vehicle.js')}}"></script>
 {{--    <script src="{{asset('/js/vehicle.js')}}"></script>--}}
     </body>
 </html>
