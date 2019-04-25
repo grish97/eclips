@@ -56,7 +56,12 @@ class VehicleController extends Controller
      */
     public function show($id)
     {
-        //
+        $vehicle = Vehicle::query()
+            ->where('id','=', $id)
+            ->with('make', 'model', 'year')
+            ->firstOrFail();
+
+        if ($vehicle != null) return response()->json($vehicle);
     }
 
     /**
@@ -67,7 +72,12 @@ class VehicleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $vehicle = Vehicle::query()
+            ->where('id','=', $id)
+            ->with('make', 'model', 'year')
+            ->first();
+
+        if ($vehicle != null) return response()->json($vehicle);
     }
 
     /**
@@ -79,7 +89,7 @@ class VehicleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        var_dump($id);
     }
 
     /**
